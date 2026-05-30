@@ -128,33 +128,33 @@
         const lessonData = [
             { 
                 q: "你喜欢什么？", 
-                a: "我喜欢游泳。", 
+                a: "我喜欢游泳", 
                 img: "https://images.unsplash.com/photo-1519315901367-f34ff9154487?w=500&q=80" // 正在游泳的人
             },
             { 
                 q: "你要买什么？", 
-                a: "我要买游泳衣。", 
+                a: "我要买游泳衣", 
                 img: "https://images.unsplash.com/photo-1551854838-212c50b4c184?w=500&q=80" // 专业的女士连体游泳衣
             },
             { 
                 q: "你要买什么？", 
-                a: "我要买游泳裤。", 
+                a: "我要买游泳裤", 
                 img: "https://images.unsplash.com/photo-1502163140606-888448ae8cfe?w=500&q=80" // 泳池边的男士运动游泳裤
             },
             { 
                 q: "你喜欢什么颜色？", 
-                a: "我喜欢红色。", 
+                a: "我喜欢红色", 
                 img: "https://images.unsplash.com/photo-1594633312681-425c7b97ccd1?w=500&q=80", // 纯正红色的短裤
                 hasBlueBorder: true // 第4张图特有的蓝色粗外框
             },
             { 
                 q: "你看这件怎么样？", 
-                a: "这件很好。", 
+                a: "这件很好", 
                 img: "https://images.unsplash.com/photo-1594633312681-425c7b97ccd1?w=500&q=80" // 红色衣服图卡展示
             },
             { 
                 q: "游泳裤多少钱？", 
-                a: "游泳裤十块钱。", 
+                a: "游泳裤十块钱", 
                 img: "https://images.unsplash.com/photo-1509316975850-ff9c5deb0cd9?w=500&q=80" // 清晰的十块钱纸币面值
             }
         ];
