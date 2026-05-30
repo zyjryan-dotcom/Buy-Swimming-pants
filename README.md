@@ -9,8 +9,8 @@
         :root {
             --bg: #f8f9fa;
             --card: #ffffff;
-            --text-green: #2d6a4f;  /* 还原截图中的提问深绿色 */
-            --text-blue: #0026e6;   /* 还原截图中的回答深蓝色 */
+            --text-green: #2d6a4f;  /* 提问深绿色 */
+            --text-blue: #0026e6;   /* 回答深蓝色 */
             --btn-next: #ff7043;
             --border-normal: #e0e0e0;
         }
@@ -55,13 +55,13 @@
         
         /* 右侧图片区域排版 */
         .image-section {
-            width: 190px; height: 150px; display: flex; align-items: center; justify-content: center;
-            overflow: hidden; border-radius: 12px; background: #fdfdfd;
+            width: 200px; height: 160px; display: flex; align-items: center; justify-content: center;
+            overflow: hidden; border-radius: 12px; background: #ffffff;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.04);
         }
         
         .lesson-img {
-            width: 100%; height: 100%; object-fit: contain;
-            filter: drop-shadow(0 4px 8px rgba(0,0,0,0.05));
+            width: 100%; height: 100%; object-fit: cover;
         }
 
         .clickable-box { cursor: pointer; transition: transform 0.1s; user-select: none; padding: 10px 0; }
@@ -95,7 +95,7 @@
     <div id="shield" onclick="boot()">
         <div style="font-size: 5.5rem; margin-bottom: 15px;">🏊‍♂️</div>
         <h2>点击开始“看图识物与问答”点读练习</h2>
-        <p style="font-size: 1.1rem; opacity: 0.95;">慢速精准朗读 · 点击句子可随时重复发声</p>
+        <p style="font-size: 1.1rem; opacity: 0.95;">修复漏字问题 · 每一个字都清清楚楚</p>
     </div>
 
     <div class="progress" id="prog-info">1 / 6</div>
@@ -124,39 +124,38 @@
     </div>
 
     <script>
-        // 严格按照最新截图文本与配图关系录入的 6 组中文对白核心数据库
-        // 插图采用了高可用的网图或图标占位，部署后可替换为自己的本地图片路径
+        // 内置高保真准确图片URL，完全对应：游泳、游泳衣、游泳裤、红色裤子、十块钱
         const lessonData = [
             { 
                 q: "你喜欢什么？", 
                 a: "我喜欢游泳。", 
-                img: "https://images.unsplash.com/photo-1530541930197-ff16ac917b0e?w=400&q=80" // 游泳动作
+                img: "https://images.unsplash.com/photo-1519315901367-f34ff9154487?w=500&q=80" // 正在游泳的人
             },
             { 
                 q: "你要买什么？", 
                 a: "我要买游泳衣。", 
-                img: "https://images.unsplash.com/photo-1576016770956-debb63d900bb?w=400&q=80" // 连体游泳衣
+                img: "https://images.unsplash.com/photo-1551854838-212c50b4c184?w=500&q=80" // 专业的女士连体游泳衣
             },
             { 
                 q: "你要买什么？", 
                 a: "我要买游泳裤。", 
-                img: "https://images.unsplash.com/photo-1590002905786-fa63a921d7b3?w=400&q=80" // 条纹男士游泳裤
+                img: "https://images.unsplash.com/photo-1502163140606-888448ae8cfe?w=500&q=80" // 泳池边的男士运动游泳裤
             },
             { 
                 q: "你喜欢什么颜色？", 
                 a: "我喜欢红色。", 
-                img: "https://images.unsplash.com/photo-1551488831-00ddcb6c6bd3?w=400&q=80", // 红色纯色短裤
-                hasBlueBorder: true // 第4张图特有的蓝色外边框
+                img: "https://images.unsplash.com/photo-1594633312681-425c7b97ccd1?w=500&q=80", // 纯正红色的短裤
+                hasBlueBorder: true // 第4张图特有的蓝色粗外框
             },
             { 
                 q: "你看这件怎么样？", 
                 a: "这件很好。", 
-                img: "https://images.unsplash.com/photo-1551488831-00ddcb6c6bd3?w=400&q=80" // 红色短裤推荐展示
+                img: "https://images.unsplash.com/photo-1594633312681-425c7b97ccd1?w=500&q=80" // 红色衣服图卡展示
             },
             { 
                 q: "游泳裤多少钱？", 
                 a: "游泳裤十块钱。", 
-                img: "https://images.unsplash.com/photo-1628157582853-a796fa650a6a?w=400&q=80" // 包含10美元美钞
+                img: "https://images.unsplash.com/photo-1509316975850-ff9c5deb0cd9?w=500&q=80" // 清晰的十块钱纸币面值
             }
         ];
 
@@ -164,7 +163,7 @@
         const speech = window.speechSynthesis;
 
         function boot() {
-            speech.speak(new SpeechSynthesisUtterance("")); // 解锁移动端浏览器的音频策略
+            speech.speak(new SpeechSynthesisUtterance("")); // 解锁移动端浏览器的音频限制
             document.getElementById('shield').style.display = 'none';
             renderCard();
         }
@@ -177,7 +176,7 @@
             document.getElementById('prog-info').textContent = `${currentIndex + 1} / ${lessonData.length}`;
             document.getElementById('content-img').src = data.img;
             
-            // 2. 完美还原第4张图特有的“蓝色粗边框”逻辑
+            // 2. 还原第4张图特有的“蓝色粗边框”逻辑
             if (data.hasBlueBorder) {
                 cardEl.style.borderColor = "var(--text-blue)";
                 cardEl.style.borderWidth = "5px";
@@ -186,45 +185,48 @@
                 cardEl.style.borderWidth = "3px";
             }
             
-            // 3. 渲染提问文本，隐藏回答区域
+            // 3. 渲染提问和回答文本
             document.getElementById('q-field').innerHTML = data.q + '<span class="audio-icon">🔊</span>';
             document.getElementById('a-field').innerHTML = data.a + '<span class="audio-icon">🔊</span>';
             document.getElementById('a-container').style.display = 'none';
 
             // 4. 新卡片载入时，默认自动清晰慢速朗读绿色提问
-            speakClear(data.q);
+            speakWithNoMissingWords(data.q);
         }
 
         // 点击提问框：清晰发音，并在 1.3 秒后自动展开并朗读下方的蓝色答案
         function clickQuestion() {
             const data = lessonData[currentIndex];
-            speakClear(data.q);
+            speakWithNoMissingWords(data.q);
             
             setTimeout(() => {
                 document.getElementById('a-container').style.display = 'block';
-                speakClear(data.a);
+                speakWithNoMissingWords(data.a);
             }, 1300);
         }
 
         // 点击回答框：支持学生独立重复、逐字听清发音
         function clickAnswer() {
             const data = lessonData[currentIndex];
-            speakClear(data.a);
+            speakWithNoMissingWords(data.a);
         }
 
-        // 核心亮点：能够“听清每一个字”的慢速、大间隔中文语音引擎
-        function speakClear(text) {
-            speech.cancel(); // 强行斩断上一句，防止因快速连点导致声音层叠模糊
+        // 核心技术改进：过滤末尾标点符号，确保最后一个汉字能被完美认读发音
+        function speakWithNoMissingWords(text) {
+            speech.cancel(); // 强行斩断上一句音频流
 
-            // 将连续的句子切割为单字，并用空格连接，强迫系统进行高保真、一字一顿的字音示范
-            const atomicText = text.split("").join(" ");
+            // 1. 智能过滤句子末尾的标点符号，防止标点和最后一个汉字粘连导致不发音
+            const cleanText = text.replace(/[？。！，,?!\s]$/g, '');
 
-            const utterance = new SpeechSynthesisUtterance(atomicText);
+            // 2. 将汉字中间用空格彻底隔开，保证一字一顿
+            const spacedText = cleanText.split("").join(" ");
+
+            const utterance = new SpeechSynthesisUtterance(spacedText);
             utterance.lang = 'zh-CN';
-            utterance.rate = 0.72;  // 极清儿童跟读专属慢语速
-            utterance.pitch = 1.0; // 标准自然音高
+            utterance.rate = 0.72;  // 针对儿童教学的极清慢速
+            utterance.pitch = 1.0; 
 
-            // 尽可能选择最标准的中文普通话柔和女声进行点读
+            // 智能检索普通话女声引擎
             const voices = speech.getVoices();
             const preferredVoice = voices.find(v => v.name.includes('Xiaoxiao') || v.lang === 'zh-CN');
             if (preferredVoice) utterance.voice = preferredVoice;
@@ -242,7 +244,6 @@
             renderCard();
         }
 
-        // 异步适配部分浏览器发音引擎载入延迟
         window.speechSynthesis.onvoiceschanged = () => speech.getVoices();
     </script>
 </body>
